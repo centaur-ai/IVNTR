@@ -1,0 +1,196 @@
+final_op: [1, 0, 0, 0, 0, 0, 0]
+neupi_non_effect_predicates: ['NotEq']
+config:
+  - name: "neural_u_p1"
+    types: ["block"]
+    ent_idx: [0]
+    search_region: [0, 0, 1, 1, 1, 1, 1]
+    architecture:
+      type: "Selective-PointNet"
+      pointnet_feat_lst: [64, 128, 256]
+      initializer: "xavier"
+    optimizer:
+      type: "AdamW"
+      kwargs:
+        lr: 0.001
+    lr_scheduler:
+      type: "StepLR"
+      kwargs:
+        step_size: 20
+        gamma: 0.1
+    quick_skip:
+      5: 0.05
+    batch_vect_num: 12
+    ucb_kappa: 0.2
+    batch_size: 128
+    epochs: 50
+    gumbel_temp: 0.66
+    val_freq: 5
+    num_iter: 5
+    matrix_vec_try: 100
+    search_tree_max_level: 1
+    guidance_thresh: 0.1
+    loss_thresh: 0.06
+    skip_train: True
+
+  - name: "neural_u_p2"
+    types: ["robot"]
+    ent_idx: [0]
+    architecture: 
+      type: "Selective-MLP"
+      layer_size: 32
+      feature_names: ["type_robot", "feat_pose_x", "feat_pose_y", "feat_pose_z", "feat_fingers"]
+      initializer: "xavier"
+    optimizer:
+      type: "AdamW"
+      kwargs:
+        lr: 0.001
+    lr_scheduler:
+      type: "StepLR"
+      kwargs:
+        step_size: 70
+        gamma: 0.1
+    batch_vect_num: 12
+    batch_size: 32
+    epochs: 30
+    gumbel_temp: 0.66
+    val_freq: 5
+    quick_skip:
+      5: 0.1
+    num_iter: 5
+    matrix_vec_try: 100
+    search_tree_max_level: 3
+    guidance_thresh: 0.05
+    loss_thresh: 0.005
+    skip_train: True
+
+  - name: "neural_u_p3"
+    types: ["block"]
+    ent_idx: [0]
+    search_region: [0, 0, 1, 1, 1, 1, 1]
+    architecture:
+      type: "Selective-NormNet"
+      pointnet_feat_lst: [64, 128, 256]
+      initializer: "xavier"
+    optimizer:
+      type: "AdamW"
+      kwargs:
+        lr: 0.001
+    lr_scheduler:
+      type: "StepLR"
+      kwargs:
+        step_size: 20
+        gamma: 0.1
+    quick_skip:
+      10: 0.08
+    batch_vect_num: 12
+    ucb_kappa: 0.2
+    batch_size: 128
+    epochs: 20
+    gumbel_temp: 0.66
+    val_freq: 4
+    num_iter: 5
+    matrix_vec_try: 100
+    search_tree_max_level: 1
+    guidance_thresh: 0.1
+    loss_thresh: 0.05
+    skip_train: True
+
+  - name: "neural_b_p1"
+    types: ["robot", "block"]
+    ent_idx: [0, 0]
+    search_region: [0, 0, 1, 1, 0, 1, 1]
+    architecture:
+      type: "Selective-RelMLPPointNet"
+      feature_names: ["ent1-type_robot", "ent1-feat_pose_x", "ent1-feat_pose_y", "ent1-feat_pose_z", "ent1-feat_fingers"]
+      pcd_ent: 2
+      layer_size: 64
+      pointnet_feat_lst: [64, 128, 256]
+      initializer: "xavier"
+    optimizer:
+      type: "AdamW"
+      kwargs:
+        lr: 0.001
+    lr_scheduler:
+      type: "StepLR"
+      kwargs:
+        step_size: 10
+        gamma: 0.1
+    batch_vect_num: 4
+    quick_skip:
+      5: 0.1
+    ucb_kappa: 0.3
+    batch_size: 16
+    epochs: 20
+    gumbel_temp: 0.66
+    val_freq: 5
+    num_iter: 70
+    matrix_vec_try: 100
+    search_tree_max_level: 3
+    guidance_thresh: 0.05 # this predicate is harder to learn for nn
+    loss_thresh: 0.08
+    skip_train: True
+
+  - name: "neural_b_p2"
+    types: ["block", "block"]
+    ent_idx: [0, 1]
+    search_region: [0, 1, 1, 0, 1, 1, 1]
+    architecture:
+      type: "Selective-DisPointNet"
+      initializer: "xavier"
+      pointnet_feat_lst: [64, 128, 256]
+    optimizer:
+      type: "AdamW"
+      kwargs:
+        lr: 0.001
+    lr_scheduler:
+      type: "StepLR"
+      kwargs:
+        step_size: 10
+        gamma: 0.1
+    batch_vect_num: 4
+    quick_skip:
+      10: 0.1
+    ucb_kappa: 0.3
+    batch_size: 16
+    epochs: 20
+    gumbel_temp: 0.66
+    val_freq: 5
+    num_iter: 70
+    matrix_vec_try: 100
+    search_tree_max_level: 1
+    guidance_thresh: 0.05 # this predicate is harder to learn for nn
+    loss_thresh: 0.08
+    skip_train: True
+
+  - name: "neural_b_p3"
+    types: ["block", "block"]
+    ent_idx: [0, 1]
+    search_region: [0, 1, 1, 0, 1, 1, 1]
+    architecture:
+      type: "Selective-DisPointNormNet"
+      initializer: "xavier"
+      pointnet_feat_lst: [64, 128, 256]
+    optimizer:
+      type: "AdamW"
+      kwargs:
+        lr: 0.001
+    lr_scheduler:
+      type: "StepLR"
+      kwargs:
+        step_size: 20
+        gamma: 0.1
+    batch_vect_num: 4
+    quick_skip:
+      10: 0.1
+    ucb_kappa: 0.3
+    batch_size: 16
+    epochs: 30
+    gumbel_temp: 0.66
+    val_freq: 5
+    num_iter: 70
+    matrix_vec_try: 100
+    search_tree_max_level: 1
+    guidance_thresh: 0.05 # this predicate is harder to learn for nn
+    loss_thresh: 0.08
+    skip_train: True

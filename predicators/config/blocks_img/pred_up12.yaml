@@ -1,0 +1,65 @@
+final_op: [1, 0, 0, 0, 0, 0, 0]
+neupi_non_effect_predicates: ['NotEq']
+config:
+  - name: "neural_u_p1"
+    types: ["block"]
+    ent_idx: [0]
+    search_region: [0, 0, 1, 1, 1, 1, 1]
+    architecture:
+      type: "Selective-PointNet"
+      pointnet_feat_lst: [64, 128, 256]
+      initializer: "xavier"
+    optimizer:
+      type: "AdamW"
+      kwargs:
+        lr: 0.001
+    lr_scheduler:
+      type: "StepLR"
+      kwargs:
+        step_size: 20
+        gamma: 0.1
+    quick_skip:
+      5: 0.05
+    batch_vect_num: 12
+    ucb_kappa: 0.2
+    batch_size: 128
+    epochs: 50
+    gumbel_temp: 0.66
+    val_freq: 5
+    num_iter: 5
+    matrix_vec_try: 100
+    search_tree_max_level: 1
+    guidance_thresh: 0.1
+    loss_thresh: 0.06
+    skip_train: False
+
+  - name: "neural_u_p2"
+    types: ["robot"]
+    ent_idx: [0]
+    architecture: 
+      type: "Selective-MLP"
+      layer_size: 32
+      feature_names: ["type_robot", "feat_pose_x", "feat_pose_y", "feat_pose_z", "feat_fingers"]
+      initializer: "xavier"
+    optimizer:
+      type: "AdamW"
+      kwargs:
+        lr: 0.001
+    lr_scheduler:
+      type: "StepLR"
+      kwargs:
+        step_size: 70
+        gamma: 0.1
+    batch_vect_num: 12
+    batch_size: 32
+    epochs: 30
+    gumbel_temp: 0.66
+    val_freq: 5
+    quick_skip:
+      5: 0.1
+    num_iter: 5
+    matrix_vec_try: 100
+    search_tree_max_level: 3
+    guidance_thresh: 0.05
+    loss_thresh: 0.005
+    skip_train: False

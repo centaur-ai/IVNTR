@@ -1,0 +1,29 @@
+learning:
+  sae:
+    lr: 0.001
+    epochs: 15
+    val_freq: 5
+    batch_size: 512
+    batch_size_val: 128
+  ama:
+    lr: 0.001
+    epochs: 700
+    val_freq: 50
+    batch_size: 512
+    batch_size_val: 128
+model:
+  sae:
+    selected_feat: ['feat_x', 'feat_y', 'feat_theta', 'feat_has_chem_x', 'feat_has_chem_y', 'feat_instrument', 'feat_is_calibrated']
+    num_pus: 8
+    num_attentions: 3 # this actually means arity, using 3 for now
+    num_predicates: 8
+    hidden_att_dim: 32
+    hidden_pred_dim: 64
+    hidden_dec_dim: 128
+  ama:
+    num_message_passing: 3
+    layer_size: 64
+    num_layers: 3
+inference:
+  max_shooting_tries: 2
+  max_shooting_actions: 500 

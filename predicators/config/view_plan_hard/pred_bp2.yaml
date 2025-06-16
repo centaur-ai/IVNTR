@@ -1,0 +1,70 @@
+final_op: [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+neupi_non_effect_predicates: ['DirectViewable', 'CalibrationTgt', 'AppliedTo']
+config:
+  - name: "neural_u_p1"
+    types: ["robot_arm"]
+    ent_idx: [0]
+    architecture: 
+      type: "MLP"
+      layer_size: 128
+      initializer: "xavier"
+    optimizer:
+      type: "AdamW"
+      kwargs:
+        lr: 0.001
+    lr_scheduler:
+      type: "StepLR"
+      kwargs:
+        step_size: 70
+        gamma: 0.1
+    quick_skip:
+      20: 0.1
+    batch_vect_num: 12
+    batch_size: 1024
+    epochs: 100
+    gumbel_temp: 0.66
+    val_freq: 10
+    num_iter: 5
+    matrix_vec_try: 100
+    search_tree_max_level: 2
+    loss_thresh: 0.005
+    guidance_thresh: 0.05
+    skip_train: False
+
+  - name: "neural_b_p2"
+    types: ["robot_arm", "target"]
+    ent_idx: [0, 0]
+    search_region: [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0]
+    architecture:
+      type: "Selective-PosRelRot-MLP"
+      feature_names: ["ent1-type_robot_arm", "ent1-type_target", "ent1-feat_ee_x", "ent1-feat_ee_y", "ent1-feat_ee_z",
+                      "ent1-feat_ee_qx", "ent1-feat_ee_qy", "ent1-feat_ee_qz", "ent1-feat_ee_qw",
+                      "ent2-type_robot_arm", "ent2-type_target", "ent2-feat_x", "ent2-feat_y", "ent2-feat_z",
+                      "ent2-feat_qx", "ent2-feat_qy", "ent2-feat_qz", "ent2-feat_qw"]
+      layer_size: 512
+      initializer: "xavier"
+    optimizer:
+      type: "AdamW"
+      kwargs:
+        lr: 0.001
+    lr_scheduler:
+      type: "StepLR"
+      kwargs:
+        step_size: 40
+        gamma: 0.1
+    quick_skip:
+      20: 0.1
+    batch_vect_num: 1
+    ucb_kappa: 0.3
+    batch_size: 1024
+    epochs: 100
+    gumbel_temp: 0.66
+    decision_b: 0.99
+    val_freq: 10
+    num_iter: 70
+    matrix_vec_try: 100
+    search_tree_max_level: 5
+    loss_thresh: 0.1
+    guidance_thresh: 0.2 # this predicate is harder to learn for nn
+    quantified_guidance_thresh: 0.5
+    skip_train: False

@@ -1,0 +1,34 @@
+final_op: [1, 0, 0, 0, 0, 0, 0]
+neupi_non_effect_predicates: ['NotEq']
+config:
+  - name: "neural_b_p3"
+    types: ["block", "block"]
+    ent_idx: [0, 1]
+    search_region: [0, 1, 1, 0, 1, 1, 1]
+    architecture:
+      type: "Selective-DisPointNormNet"
+      initializer: "xavier"
+      pointnet_feat_lst: [64, 128, 256]
+    optimizer:
+      type: "AdamW"
+      kwargs:
+        lr: 0.001
+    lr_scheduler:
+      type: "StepLR"
+      kwargs:
+        step_size: 20
+        gamma: 0.1
+    batch_vect_num: 4
+    quick_skip:
+      10: 0.1
+    ucb_kappa: 0.3
+    batch_size: 16
+    epochs: 30
+    gumbel_temp: 0.66
+    val_freq: 5
+    num_iter: 70
+    matrix_vec_try: 100
+    search_tree_max_level: 1
+    guidance_thresh: 0.05 # this predicate is harder to learn for nn
+    loss_thresh: 0.08
+    skip_train: False

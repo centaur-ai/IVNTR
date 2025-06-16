@@ -1,0 +1,20 @@
+# Additional info associated with the map.
+---
+spot-home-pose:
+  x: 1.611
+  y: -0.130
+  angle: -1.5090486741635791
+# The info below is used to transform april tag x, y, z detections into object
+# x, y, z. For example, if a tag is hanging off the side of a table, we would
+# want to use the center of the table as the origin of the table object.
+# Allowed regions. Each region is defined by a set of points
+# that form the boundary of the region. We will check
+# whether a pose is within the region by checking whether the
+# robot will be within the convex hull of these boundary
+# points.
+allowed-regions:
+  exercise-place:
+    - [3.2, 0.095]
+    - [1, 0.097]
+    - [1.2, 0.99]
+    - [3, 0.94]
