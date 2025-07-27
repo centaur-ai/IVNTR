@@ -16,7 +16,7 @@ do
         --neupi_pred_config "predicators/config/view_plan_hard/pred_all.yaml" \
         --neupi_do_normalization True \
         --neupi_gt_ae_matrix False \
-        --sesame_task_planner "fdsat" \
+        --sesame_task_planner "astar" \
         --num_train_tasks 2000 \
         --load_approach \
         --load_neupi_from_json True \
@@ -58,7 +58,7 @@ do
         --neupi_pred_config "predicators/config/view_plan_hard/pred_all.yaml" \
         --neupi_do_normalization True \
         --neupi_gt_ae_matrix False \
-        --sesame_task_planner "fdsat" \
+        --sesame_task_planner "astar" \
         --num_train_tasks 2000 \
         --load_data \
         --load_approach \

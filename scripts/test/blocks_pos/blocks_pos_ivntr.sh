@@ -16,7 +16,7 @@ do
         --neupi_gt_ae_matrix False \
         --exclude_domain_feat "none" \
         --domain_sampler_data_filter "none" \
-        --sesame_task_planner "fdsat" \
+        --sesame_task_planner "astar" \
         --num_train_tasks 500 \
         --load_approach \
         --load_neupi_from_json True \
@@ -60,7 +60,7 @@ do
         --excluded_predicates "On,OnTable,GripperOpen,Holding,Clear" \
         --neupi_pred_config "predicators/config/blocks_onclear/pred.yaml" \
         --neupi_gt_ae_matrix False \
-        --sesame_task_planner "fdsat" \
+        --sesame_task_planner "astar" \
         --num_train_tasks 500 \
         --load_data \
         --exclude_domain_feat "none" \

@@ -2117,7 +2117,10 @@ class BilevelLearningApproach(NSRTLearningApproach):
                                 self._edge_feature_to_index,
                                 dims=self.learned_ae_pred_info[pred_temp]['neural_dim'])
                 # same group shares the same model
-                weights = torch.load(self.learned_ae_pred_info[pred_temp]['model_weights'][i])
+                if torch.cuda.is_available():
+                    weights = torch.load(self.learned_ae_pred_info[pred_temp]['model_weights'][i])
+                else:
+                    weights = torch.load(self.learned_ae_pred_info[pred_temp]['model_weights'][i], map_location='cpu')
                 pred_model.load_state_dict(weights)
                 # note that grounding this predicate do not need the operatr ent idx, just ground all
                 specific_function = self.generate_classifier(pred_temp, pred_model, pred_config['gumbel_temp'], \

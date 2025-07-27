@@ -23,7 +23,7 @@ do
         --neupi_cache_input_graph True \
         --neupi_gt_ae_matrix False \
         --num_train_tasks 500 \
-        --sesame_task_planner "fdsat" \
+        --sesame_task_planner "astar" \
         --neupi_learning_dataset 1.0 \
         --domain_aaai_thresh 500000 \
         --timeout 30 \
@@ -63,7 +63,7 @@ do
         --neupi_cache_input_graph True \
         --neupi_gt_ae_matrix False \
         --num_train_tasks 500 \
-        --sesame_task_planner "fdsat" \
+        --sesame_task_planner "astar" \
         --neupi_learning_dataset 1.0 \
         --domain_aaai_thresh 500000 \
         --timeout 10 \

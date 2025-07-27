@@ -16,7 +16,7 @@ do
         --neupi_gt_ae_matrix False \
         --exclude_domain_feat "none" \
         --domain_sampler_data_filter "none" \
-        --sesame_task_planner "fdsat" \
+        --sesame_task_planner "astar" \
         --num_train_tasks 500 \
         --timeout 5 \
         --neupi_do_normalization True \

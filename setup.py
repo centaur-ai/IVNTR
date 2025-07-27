@@ -41,6 +41,8 @@ setup(
         "ImageHash",
         "google-generativeai",
         "tenacity",
+        "pybullet",
+        "natsort"
     ],
     include_package_data=True,
     extras_require={

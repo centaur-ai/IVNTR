@@ -16,7 +16,7 @@ do
         --neupi_pred_config "predicators/config/view_plan_trivial/pred.yaml" \
         --neupi_do_normalization True \
         --neupi_gt_ae_matrix False \
-        --sesame_task_planner "fdsat" \
+        --sesame_task_planner "astar" \
         --num_train_tasks 500 \
         --neupi_entropy_w 0.0 \
         --load_approach \
@@ -61,7 +61,7 @@ do
         --neupi_do_normalization True \
         --neupi_gt_ae_matrix False \
         --exclude_domain_feat "none" \
-        --sesame_task_planner "fdsat" \
+        --sesame_task_planner "astar" \
         --num_train_tasks 500 \
         --load_data \
         --neupi_entropy_w 0.0 \

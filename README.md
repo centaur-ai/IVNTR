@@ -24,15 +24,22 @@ This repo is heavily based on [predicators](https://github.com/Learning-and-Inte
 - From scratch
     ```
     git clone https://github.com/Jaraxxus-Me/IVNTR.git
-    git submodule update --init --recursive
     conda create -n ivntr python=3.8.10
     cd IVNTR
     pip install -e .
     # We have used torch 2.1.2 on CUDA 12.1 machine, but this should be flexible
+    # On a machine with CUDA and GPU
     pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu121
-    # Install FastDownward, following their instructions if anything goes wrong
-    cd ext/downward
+    # On machines without CUDA GPU (e.g., MacBook)
+    pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2
+    # install and build FastDownward
+    mkdir ext
+    cd ext/
+    git clone https://github.com/aibasel/downward.git
+    cd downward
     python build.py
+    cd ..
+    cd ..
     mkdir saved_approaches saved_datasets logs
     ```
     If you want to run the blocks point cloud environment, follow instructions here to compile pytorch3d on your machine.
@@ -41,6 +48,13 @@ This repo is heavily based on [predicators](https://github.com/Learning-and-Inte
     pip install pytorch3d
     ```
 
+    *Trouble Shooting for MacBook*:
+    1. Make sure you have installed `coreutils`
+        ```
+        brew install coreutils
+        ```
+
+
 - Using docker (not verified)
     ```
     docker pull bowenli1024/predicators:v0
@@ -48,9 +62,9 @@ This repo is heavily based on [predicators](https://github.com/Learning-and-Inte
 
 ## Test Invented Predicates
 
-- [ ] Verify them on local machine
+This is used to test the installation is successful and to reproduce the Satellites Domain in Table I of our paper.
 
-1. Download the pre-trained models [here](https://drive.google.com/file/d/1hOb776_weRpD6wkS5mBnGmkPLwrEXGku/view?usp=sharing), extract them in `IVNTR/saved_approaches`. Download all of our experiment log files [here](https://drive.google.com/file/d/1rZJZE3sQvucGBK7TUdSgmkYvP7fLooro/view?usp=drive_link) (for verifying the reproduction).
+1. Download the pre-trained models [here](https://drive.google.com/file/d/1hOb776_weRpD6wkS5mBnGmkPLwrEXGku/view?usp=sharing), extract them in `IVNTR/saved_approaches`. Download all of our experiment log files [here](https://drive.google.com/file/d/1rZJZE3sQvucGBK7TUdSgmkYvP7fLooro/view?usp=drive_link) (If you want to see the settings and configurations in other domains).
     ```
     IVNTR/
     ├── saved_approaches/
@@ -73,7 +87,8 @@ This repo is heavily based on [predicators](https://github.com/Learning-and-Inte
 
     For example, testing the satellites domain:
     ```
-    bash scripts/test/satellites/satellites_ivntr.sh
+    mkdir logs/satellites
+    bash scripts/test/satellites/satellites_ivntr.sh # this uses cpu as device, --device "cuda:0" will use cuda gpu.
     ```
     You will notice that the script will automatically create training demonstrations and test tasks in `saved_datasets`.
     This may take a while.
@@ -99,90 +114,14 @@ This repo is heavily based on [predicators](https://github.com/Learning-and-Inte
     PER_TASK_task14_options_executed: 22.0
     ...
     ```
-4. A detailed explanation of the pre-trained folders
 
-    `ivntr_0/neural_b_p3`: ALL of the neural weights for invented predicate group `b_p3(?sat,?obj)` during one tree expansion.
-
-    `ivntr_0/xxxx.saved.json`: The information about SELECTED predicates and the operators constructed from them. In the `.sh` files, the flag `load_neupi_from_json` will try to use this file.
-
-    `ivntr_0/xxxx.saved.neupi_info`: Some legacy info generated, but it is hardware dependent.
-
-    `ivntr_0/xxxx.saved.init_atom_traj`: Useless.
-
-5. Other baselines in TABLE I
+4. Other baselines in TABLE I
 
     You can also play with other baselines by following the `.sh` files in `scripts/test/satellites`. But they will need to be re-trained. Since we use the same samplers as our bilevel planner, you will need to first re-learn IVNTR following the next section.
 
+## Documentation and Tutorials
 
-
-## Inventing Neural Predicates from Demonstration
-There are two optional predicate invention pipelines and they are used in different domains.
-
-### Inventing ALL groups of predicates in a single run.
-
-This works for small scale domains such as `satellites`, `blocks`, `viewplan`.
-For example, to invent predicates for `satellites`, run:
-```
-bash scripts/train/satellites/satellites_biplan.sh
-```
-Some important configures:
-- `predicators/config/satellites/pred.yaml`: Specifies the learning configurations for each group (make sure not to skip any of the predicates if not resumed).
-
-- `--neupi_save_path`: Defines where the predicates will be stored.
-
-- `--domain_aaai_thresh`: Defines the threshold to stop predicate selection.
-
-Test will start by default right after training.
-
-### Inventing each groups of predicates in parallel multiple runs.
-
-This works for large scale domains such as `engrave`, `pickplace_stair`.
-For example, to invent predicates for `pickplace_stair`, do the following in sequence:
-
-0. Collect demonstration data:
-    We will use an `oracle` bilevel planner to collect deomonstrations, e.g.,
-    ```
-    scripts/train/pickplace_stair/collect_data_0.sh
-    ```
-    Note that:
-    - Use `--sesame_task_planner 'fdopt'`.
-
-    - The data will be saved to `saved_datasets`
-
-    - After this, use `--load_data` in the following steps.
-
-1. Invent individual groups:
-    ```
-    bash scripts/train/pickplace_stair/pickplace_biplan_up12.sh # on GPU0
-    bash scripts/train/pickplace_stair/pickplace_biplan_bp3.sh # on GPU1
-    bash scripts/train/pickplace_stair/pickplace_biplan_bp4.sh # on GPU2
-    bash scripts/train/pickplace_stair/pickplace_biplan_bp5.sh # on GPU3
-    ...
-    ```
-    Note that:
-    - For each run, we have only used part of the predicate learning configuration. E.g., `predicators/config/pickplace_stair/pred_up12.yaml` is just part of `predicators/config/pickplace_stair/pred_all.yaml`.
-
-    - You can kill each run after the invention is done. You can know this from the logging:
-        ```
-        Neural Predicate Invention Done in xxx seconds.
-        ```
-        Once you see this line, kill the run.
-    
-2. Search the complete predicate pool:
-    ```
-    bash scripts/train/pickplace_stair/pickplace_biplan_search.sh
-    ```
-    Note that:
-    - Here we used `predicators/config/pickplace_stair/pred_all.yaml`, where all groups are skipped, `skip_train: True`.
-
-    - In ths `.sh` file, we used `--neupi_load_pretrained` instead of `--neupi_save_path` in step 1. But the two directories are the same.
-
-    - After this step, you will notice that there will be an additional file named `xxx.neupi_info` in the `--neupi_load_pretrained` directory. This stores (1) the selected predicates and the operator and (2) the learned sampler for each operator. A good way to interprete it would be using this file:
-        ```
-        python3 scripts/biplan_pkl2json.py # replace the file path
-        ```
-        This generates the `.json` file we have used in the previous test section.
-        `.json` file does not store the learned samplers since they are neural generators, but samplers will be saved as `.pt` files and can be loaded with this flag `neupi_gt_sampler`. Detail see L2467 in `predicators/approaches/bilevel_learning_approach.py`.
+Bilevel planning and learning predicates can be very complicated, we have tried to provide an easy-to-understand tutorial in `docs`, follow them steps by step will help you understand how bilevel learning works for bilevel planning.
 
 
 ## Reference

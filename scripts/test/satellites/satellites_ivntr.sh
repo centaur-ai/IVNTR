@@ -17,7 +17,7 @@ do
         --sesame_task_planner "fdsat" \
         --exclude_domain_feat "none" \
         --neupi_do_normalization False \
-        --num_train_tasks 500 \
+        --num_train_tasks 10 \
         --domain_aaai_thresh 100000 \
         --neupi_entropy_w 0.5 \
         --neupi_loss_w 0.5 \
@@ -28,6 +28,7 @@ do
         --load_approach \
         --load_neupi_from_json True \
         --timeout 5 \
+        --device "cpu" \
         --approach_dir "saved_approaches/open_models/satellites/ivntr_$seed" \
         --neupi_save_path "saved_approaches/open_models/satellites/ivntr_$seed" \
         --log_file logs/satellites/ivntr_ood_$seed.log; then
@@ -62,7 +63,7 @@ do
         --sesame_task_planner "fdsat" \
         --exclude_domain_feat "none" \
         --neupi_do_normalization False \
-        --num_train_tasks 500 \
+        --num_train_tasks 10 \
         --neupi_entropy_w 0.5 \
         --neupi_loss_w 0.5 \
         --load_data \
@@ -74,6 +75,7 @@ do
         --load_neupi_from_json True \
         --in_domain_test True \
         --timeout 5 \
+        --device "cpu" \
         --approach_dir "saved_approaches/open_models/satellites/ivntr_$seed" \
         --neupi_load_pretrained "saved_approaches/open_models/satellites/ivntr_$seed" \
         --log_file logs/satellites/ivntr_indomain_$seed.log; then

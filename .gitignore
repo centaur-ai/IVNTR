@@ -35,3 +35,5 @@ wandb/
 *.npy
 *.txt
 *.ply
+CLAUDE.md
+ext/

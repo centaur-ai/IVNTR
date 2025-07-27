@@ -22,7 +22,7 @@ do
         --neupi_cache_input_graph True \
         --neupi_gt_ae_matrix False \
         --num_train_tasks 500 \
-        --sesame_task_planner "fdsat" \
+        --sesame_task_planner "astar" \
         --neupi_learning_dataset 0.1 \
         --neupi_equ_dataset 0.5 \
         --domain_aaai_thresh 500000 \
@@ -60,7 +60,7 @@ do
     #     --neupi_pred_config "predicators/config/blocks_onclear/pred.yaml" \
     #     --neupi_do_normalization True \
     #     --load_data \
-    #     --sesame_task_planner "fdsat" \
+    #     --sesame_task_planner "astar" \
     #     --neupi_save_path "saved_approaches/Repro_1108/blocks_onclear500_ivntr_$seed" >> logs/Repro_1108/blocks_onclear500_ivntr/$seed.log 2>&1; then
     #     echo "Seed $seed completed successfully."
     # else
@@ -92,7 +92,7 @@ do
     #     --neupi_pred_config "predicators/config/satellites/pred.yaml" \
     #     --neupi_do_normalization False \
     #     --load_data \
-    #     --sesame_task_planner "fdsat" \
+    #     --sesame_task_planner "astar" \
     #     --neupi_save_path "saved_approaches/Repro_1108/satellites500_ivntr_$seed" >> logs/Repro_1108/satellites500_ivntr/$seed.log 2>&1; then
     #     echo "Seed $seed completed successfully."
     # else
