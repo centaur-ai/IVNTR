@@ -23,7 +23,7 @@ This repo is heavily based on [predicators](https://github.com/Learning-and-Inte
 
 - From scratch
     ```
-    git clone https://github.com/Jaraxxus-Me/IVNTR.git
+    git clone https://github.com/centaur-ai/IVNTR
     conda create -n ivntr python=3.8.10
     cd IVNTR
     pip install -e .
@@ -53,6 +53,14 @@ This repo is heavily based on [predicators](https://github.com/Learning-and-Inte
         ```
         brew install coreutils
         ```
+
+    2. If `pip install` didn't work for `pybullet`, try conda instead:
+        ```
+            conda install -c conda-forge pybullet
+        ```
+
+    3. Issues related to Fast Downward
+        Follow the official installation guide [here](https://github.com/aibasel/downward/blob/main/BUILD.md), there might be issues across platforms.
 
 
 - Using docker (not verified)

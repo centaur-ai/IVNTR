@@ -28,12 +28,12 @@ class GlobalSettings:
     # exclude_domain_feat = {
     #     'block': ["pose_x", "pose_y", "pose_z", "color_r", "color_g", "color_b", "held"]
     # }
-    # domain_sampler_data_filter = None # for all other domains except for view_plan and blocks eng
-    domain_sampler_data_filter = {
-            'robot_arm': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
-            'target': [0, 1, 2, 3, 4, 5, 6],
-            'stair': [0, 1, 2, 3, 4, 5, 6]
-        } # for viewplan hard
+    domain_sampler_data_filter = None # for all other domains except for view_plan and blocks eng
+    # domain_sampler_data_filter = {
+    #         'robot_arm': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+    #         'target': [0, 1, 2, 3, 4, 5, 6],
+    #         'stair': [0, 1, 2, 3, 4, 5, 6]
+    #     } # for viewplan hard
     # domain_sampler_data_filter = {
     #         'robot_arm': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
     #         'tgt_pickplace': [0, 1, 2, 3, 4, 5, 6, 12],
